@@ -2,17 +2,44 @@ const express = require("express");
 const router = express.Router();
 
 //controller
-const { signup, activation, signin } = require("../controllers/auth");
+const {
+  signup,
+  activation,
+  signin,
+  forgotPassword,
+  resetPassword,
+  googleLogin,
+  facebookLogin
+} = require("../controllers/auth");
 
 //validators
 const {
   userSignupValidator,
-  userSigninValidator
+  userSigninValidator,
+  forgotPasswordValidator,
+  resetPasswordValidator
 } = require("../validators/auth");
 const { runValidation } = require("../validators");
 
 router.post("/signup", userSignupValidator, runValidation, signup);
 router.post("/account-activation", activation);
 router.post("/signin", userSigninValidator, runValidation, signin);
+//forgot reset password
+router.put(
+  "/forgot-password",
+  forgotPasswordValidator,
+  runValidation,
+  forgotPassword
+);
+router.put(
+  "/reset-password",
+  resetPasswordValidator,
+  runValidation,
+  resetPassword
+);
+//google and facebook endpoint
+router.post('/google-login', googleLogin)
+router.post('/facebook-login', facebookLogin)
+
 
 module.exports = router;
